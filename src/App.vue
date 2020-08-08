@@ -2,19 +2,22 @@
     <div id="app">
         <h2 class="title">Prueba IT</h2>
         <Layout>
-          <UserList />
+            <UserProfile />
+            <UserList />
         </Layout>
     </div>
 </template>
 
 <script>
 import Layout from "./components/Layout";
+import UserProfile from "./components/UserProfile";
 import UserList from "./components/UserList";
 
 export default {
     name: "App",
     components: {
         Layout,
+        UserProfile,
         UserList,
     },
 };
