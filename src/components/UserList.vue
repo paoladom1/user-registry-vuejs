@@ -5,7 +5,7 @@
             <ul class="user-list">
                 <EmptyList class="empty-list-img" />
             </ul>
-            <transition class="slide-fade">
+            <transition name="slide-fade">
                 <button class="add-user" v-if="hover" @click="show = !show">
                     <div class="dashed-with-gradient">
                         <AddUser class="add-user-img" />
@@ -133,5 +133,12 @@ export default {
     height: 2px;
     background-color: #d3ecff;
     margin-top: 20px;
+}
+
+.slide-fade-enter-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-leave-active {
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 </style>
