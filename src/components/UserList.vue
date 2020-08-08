@@ -1,15 +1,17 @@
 <template>
     <div class="container">
         <h3 class="title">Usuarios</h3>
-        <div class="user-box">
+        <div class="user-box" @mouseover="hover = true" @mouseleave="hover=false">
             <ul class="user-list">
                 <EmptyList class="empty-list-img" />
             </ul>
-            <button class="add-user">
-                <div class="dashed-with-gradient">
-                    <AddUser class="add-user-img" />
-                </div>
-            </button>
+            <transition class="slide-fade">
+                <button class="add-user" v-if="hover" >
+                    <div class="dashed-with-gradient">
+                        <AddUser class="add-user-img" />
+                    </div>
+                </button>
+            </transition>
         </div>
     </div>
 </template>
@@ -24,18 +26,26 @@ export default {
         AddUser,
         EmptyList,
     },
+    data() {
+        return {
+            hover: false,
+        };
+    },
 };
 </script>
 
 <style scoped>
 .container {
-    flex-direction: column;
+    height: auto;
+    margin: 0 auto 20px;
     justify-content: center;
+    margin-top: 36px;
 }
 
 .title {
     width: 100%;
-    margin: 30px auto;
+    margin: 0 auto 30px;
+    color: black;
 }
 
 .user-box {
@@ -50,8 +60,10 @@ export default {
     height: 86px;
     border-radius: 10px;
     margin: 0;
+    padding: 0;
     background-color: #f1f4f7;
     box-shadow: 8px 8px 10px rgba(159, 166, 173, 0.15);
+    box-sizing: border-box;
 }
 
 .add-user {
@@ -64,6 +76,7 @@ export default {
     border: 0;
     background-color: #f1f4f7;
     box-shadow: 8px 8px 10px rgba(159, 166, 173, 0.15);
+    box-sizing: border-box;
 }
 
 .add-user:active {
@@ -95,5 +108,26 @@ export default {
     width: 99.69px;
     height: 78px;
     margin: auto;
+}
+
+.users {
+    margin: 10px;
+}
+
+.hexagon {
+    width: 45px;
+    height: 45px;
+}
+
+.hexagon-img {
+    width: 45px;
+    height: 45px;
+}
+
+.div-line {
+    width: 554px;
+    height: 2px;
+    background-color: #d3ecff;
+    margin-top: 20px;
 }
 </style>
