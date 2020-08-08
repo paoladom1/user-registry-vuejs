@@ -1,8 +1,16 @@
 <template>
     <div class="container">
         <div class="profile-img">
-            <div class="dashed">
-                <Profile class="img" />
+            <div class="drop" @dragover.prevent @drop="onDrop">
+                    <Profile class="img" v-if="!image"/>
+
+                <div
+                    v-else
+                    v-bind:class="{ 'image': true }"
+                >
+                    <img :src="image" alt class="image" />
+                    <button class="btn" @click="removeFile">X</button>
+                </div>
             </div>
         </div>
         <form class="form">
@@ -25,6 +33,39 @@ export default {
         Profile,
         Save,
     },
+    data() {
+        return {
+            image: "",
+        };
+    },
+    methods: {
+        onDrop: function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var files = e.dataTransfer.files;
+            this.createFile(files[0]);
+        },
+        onChange(e) {
+            var files = e.target.files;
+            this.createFile(files[0]);
+        },
+        createFile(file) {
+            if (!file.type.match("image.*")) {
+                alert("Select an image");
+                return;
+            }
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = function (e) {
+                vm.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        removeFile() {
+            this.image = "";
+        },
+    },
 };
 </script>
 
@@ -46,7 +87,8 @@ export default {
     border-radius: 10px;
 }
 
-.dashed {
+.drop, .image {
+    position: relative;
     display: flex;
     width: 108px;
     height: 90px;
@@ -108,5 +150,26 @@ export default {
 
 .save-user:focus {
     outline: none;
+}
+
+.btn {
+    z-index: 1;
+    position: absolute;
+    border: none;
+    background: none;
+    right: 0px;
+    color: #c2c0c1;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.hidden.image {
+    display: inline-block !important;
 }
 </style>
