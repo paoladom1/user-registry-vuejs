@@ -6,25 +6,29 @@
                 <EmptyList class="empty-list-img" />
             </ul>
             <transition class="slide-fade">
-                <button class="add-user" v-if="hover" >
+                <button class="add-user" v-if="hover" @click="show = !show">
                     <div class="dashed-with-gradient">
                         <AddUser class="add-user-img" />
                     </div>
                 </button>
             </transition>
         </div>
+        <div class="div-line" v-if="show" />
+        <UserForm v-if="show" />
     </div>
 </template>
 
 <script>
 import AddUser from "../assets/iconos_ilustraciones/icono-agregar-usuario.svg";
 import EmptyList from "../assets/iconos_ilustraciones/ilustracion-usuarios-vacios.svg";
+import UserForm from "../components/UserForm";
 
 export default {
     name: "UserList",
     components: {
         AddUser,
         EmptyList,
+        UserForm,
     },
     data() {
         return {
