@@ -14,10 +14,12 @@ export default {
 .container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     width: 720px;
     height: 720px;
     margin: auto;
     background-color: #d2d6e2;
+    box-sizing: border-box;
 }
 </style>

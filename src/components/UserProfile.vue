@@ -38,6 +38,7 @@ export default {
     width: 191px;
     height: 167px;
     border-radius: 10px;
+    align-self: center;
     background-color: #f1f4f7;
     box-sizing: border-box;
 }
