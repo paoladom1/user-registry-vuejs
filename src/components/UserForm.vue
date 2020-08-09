@@ -2,22 +2,19 @@
     <div class="container">
         <div class="profile-img">
             <div class="drop" @dragover.prevent @drop="onDrop">
-                    <Profile class="img" v-if="!image"/>
+                <Profile class="img" v-if="!image" />
 
-                <div
-                    v-else
-                    v-bind:class="{ 'image': true }"
-                >
+                <div v-else v-bind:class="{ 'image': true }">
                     <img :src="image" alt class="image" />
                     <button class="btn" @click="removeFile">X</button>
                 </div>
             </div>
         </div>
         <form class="form">
-            <input class="input" type="text" placeholder="Nombre:" />
-            <input class="input" type="text" placeholder="Apellido:" />
+            <input v-model="firstname" required class="input" type="text" placeholder="Nombre:" />
+            <input v-model="lastname" required class="input" type="text" placeholder="Apellido:" />
         </form>
-        <button class="save-user">
+        <button @click="saveUser({image, firstname, lastname})" class="save-user">
             <Save class="save-user-img" />
         </button>
     </div>
@@ -36,6 +33,8 @@ export default {
     data() {
         return {
             image: "",
+            firstname: "",
+            lastname: "",
         };
     },
     methods: {
@@ -43,10 +42,6 @@ export default {
             e.stopPropagation();
             e.preventDefault();
             var files = e.dataTransfer.files;
-            this.createFile(files[0]);
-        },
-        onChange(e) {
-            var files = e.target.files;
             this.createFile(files[0]);
         },
         createFile(file) {
@@ -65,6 +60,10 @@ export default {
         removeFile() {
             this.image = "";
         },
+        saveUser(user) {
+            this.$store.commit("addUser", { user });
+            this.$store.commit("toggleForm");
+        },
     },
 };
 </script>
@@ -75,7 +74,8 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 36px;
+    align-self: center;
+    margin: 36px 0 0 0;
 }
 
 .profile-img {
@@ -87,7 +87,8 @@ export default {
     border-radius: 10px;
 }
 
-.drop, .image {
+.drop,
+.image {
     position: relative;
     display: flex;
     width: 108px;
@@ -96,6 +97,9 @@ export default {
     margin: auto 5px;
     box-sizing: border-box;
     justify-content: center;
+}
+
+.drop {
     border: dashed 0.5px #c2c0c1;
 }
 

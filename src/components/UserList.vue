@@ -2,39 +2,50 @@
     <div class="container">
         <h3 class="title">Usuarios</h3>
         <div class="user-box" @mouseover="hover = true" @mouseleave="hover=false">
-            <ul class="user-list">
-                <EmptyList class="empty-list-img" />
-            </ul>
+            <div class="users-wrapper">
+                <EmptyList v-if="$store.state.users.length === 0" class="empty-list-img" />
+                <ul id="grid" v-else class="user-list">
+                    <li
+                        class="list-element"
+                        v-for="(user, index) in $store.state.users"
+                        v-bind:key="index"
+                        @click="toggleProfile"
+                    >
+                        <Hexagon class="hexagon"></Hexagon>
+                        <img class="hexagon-img" :src="user.image" />
+                    </li>
+                </ul>
+            </div>
             <transition name="slide-fade">
-                <button class="add-user" v-if="hover" @click="show = !show">
+                <button class="add-user" v-if="hover" @click="toggleForm">
                     <div class="dashed-with-gradient">
                         <AddUser class="add-user-img" />
                     </div>
                 </button>
             </transition>
         </div>
-        <div class="div-line" v-if="show" />
-        <UserForm v-if="show" />
     </div>
 </template>
 
 <script>
 import AddUser from "../assets/iconos_ilustraciones/icono-agregar-usuario.svg";
 import EmptyList from "../assets/iconos_ilustraciones/ilustracion-usuarios-vacios.svg";
-import UserForm from "../components/UserForm";
+import Hexagon from "../assets/iconos_ilustraciones/icono-hexagono.svg";
+import { mapMutations } from "vuex";
 
 export default {
     name: "UserList",
     components: {
         AddUser,
         EmptyList,
-        UserForm,
+        Hexagon,
     },
     data() {
         return {
             hover: false,
         };
     },
+    methods: mapMutations(["toggleForm", "toggleProfile"]),
 };
 </script>
 
@@ -58,10 +69,10 @@ export default {
     justify-content: center;
 }
 
-.user-list {
-    display: flex;
+.users-wrapper {
     width: 431px;
-    height: 86px;
+    min-height: 86px;
+    max-height: auto;
     border-radius: 10px;
     margin: 0;
     padding: 0;
@@ -111,11 +122,37 @@ export default {
 .empty-list-img {
     width: 99.69px;
     height: 78px;
-    margin: auto;
+    margin: 4px;
 }
 
-.users {
+.user-list {
+    display: grid;
+    grid-template-columns: repeat(9, 39px);
+    list-style-type: none;
+    padding: 0;
+    height: auto;
+    width: 100%;
     margin: 10px;
+}
+
+.list-element {
+    width: 45px;
+    height: auto;
+    margin: 0;
+    display: flex;
+}
+
+.user-list .list-element:nth-child(odd) {
+    grid-row-start: auto;
+    grid-row-end: auto;
+    margin-left: 0;
+    margin-top: 0;
+}
+.user-list .list-element:nth-child(even) {
+    grid-row-start: even;
+    grid-row-end: even;
+    margin-left: 19px;
+    margin-top: -12px;
 }
 
 .hexagon {
@@ -124,21 +161,17 @@ export default {
 }
 
 .hexagon-img {
-    width: 45px;
-    height: 45px;
-}
-
-.div-line {
-    width: 554px;
-    height: 2px;
-    background-color: #d3ecff;
-    margin-top: 20px;
+    position: absolute;
+    width: 35px;
+    height: 40px;
+    margin: 2.7px 2px 2px 5px;
+    clip-path: polygon(0 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0, 0 25%);
 }
 
 .slide-fade-enter-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-leave-active {
-  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 </style>
