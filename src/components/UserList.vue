@@ -73,8 +73,12 @@ export default {
     },
     methods: {
         addUser() {
-            this.$store.commit("cleanupForm");
-            this.$store.commit("showForm");
+            const { users } = this.$store.state;
+            const cant = users.length;
+
+            this.$store.commit("setCurrentUser", cant);
+            this.$store.commit("addUser");
+            this.$store.commit("setEditing");
         },
         onItemClick(index) {
             this.$store.commit("setCurrentUser", index);

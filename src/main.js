@@ -7,10 +7,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        users: Array(50).fill({
-            firstname: "alejandro",
-            lastname: "velasco",
-        }),
+        users: [],
         userForm: {
             firstname: "",
             lastname: "",
@@ -22,13 +19,8 @@ const store = new Vuex.Store({
         showProfile: false
     },
     mutations: {
-        addUser({ users }, user) {
-            users.push(user);
-            this.state.userForm = {
-                firstname: "",
-                lastname: "",
-                image: ""
-            };
+        addUser({ users }) {
+            users.push({ firstname: "", lastname: "", image: "" });
         },
         updateUser({ users, currentUser }, user) {
             this.state.users = users.map((item, i) =>
@@ -51,7 +43,9 @@ const store = new Vuex.Store({
             };
         },
         setEditing({ users, currentUser }) {
-            const { firstname, lastname, image } = users[currentUser];
+            const { firstname, lastname, image } = users[
+                currentUser
+            ];
 
             this.state.editing = true;
             this.state.showForm = true;
