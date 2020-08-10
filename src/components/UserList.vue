@@ -21,7 +21,9 @@
                                 gridRow:
                                     index % 2 === 0
                                         ? `${Math.floor(index / 20) * 2 +
-                                              1} / Math.floor(index / 20) * 2 + 2`
+                                              1} / ${Math.floor(index / 20) *
+                                              2 +
+                                              2}`
                                         : `${Math.floor(index / 20) * 2 +
                                               2} / ${Math.floor(index / 20) *
                                               2 +
@@ -203,15 +205,17 @@ export default {
 .hexagon-default-img,
 .hexagon-img {
     position: absolute;
-    width: 35px;
-    height: 40px;
-    margin: 2.7px 2px 2px 5px;
+    width: 36px;
+    height: 41px;
+    margin: 2.1px 2px 2px 4.6px;
 }
 
 .hexagon-default-img {
     position: absolute;
     left: 7px;
-    top: 2px;
+    top: 3px;
+    height: 32px;
+    width: 21px;
 }
 
 .hexagon-img {
