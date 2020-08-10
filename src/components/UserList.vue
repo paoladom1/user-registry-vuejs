@@ -16,6 +16,19 @@
                         class="list-element"
                         v-for="(user, index) in $store.state.users"
                         v-bind:key="index"
+                        :style="
+                            index >= 19 && {
+                                gridRow:
+                                    index % 2 === 0
+                                        ? `${Math.floor(index / 20) * 2 +
+                                              1} / Math.floor(index / 20) * 2 + 2`
+                                        : `${Math.floor(index / 20) * 2 +
+                                              2} / ${Math.floor(index / 20) *
+                                              2 +
+                                              3}`,
+                                marginTop: '-12px'
+                            }
+                        "
                         @click="onItemClick(index)"
                     >
                         <Hexagon class="hexagon"></Hexagon>
@@ -61,12 +74,12 @@ export default {
     methods: {
         addUser() {
             this.$store.commit("cleanupForm");
-            this.$store.commit("showForm");   
+            this.$store.commit("showForm");
         },
         onItemClick(index) {
             this.$store.commit("setCurrentUser", index);
             this.$store.commit("showProfile");
-        },
+        }
     }
 };
 </script>
@@ -149,7 +162,7 @@ export default {
 
 .user-list {
     display: grid;
-    grid-template-columns: repeat(9, 39px);
+    grid-template-columns: repeat(10, 39px);
     list-style-type: none;
     padding: 0;
     height: auto;
@@ -194,7 +207,7 @@ export default {
 .hexagon-default-img {
     position: absolute;
     left: 7px;
-    top: 3px;
+    top: 2px;
 }
 
 .hexagon-img {

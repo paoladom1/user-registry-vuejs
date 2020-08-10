@@ -7,7 +7,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        users: Array(3).fill({ firstname: "alejandro", lastname: "velasco" }),
+        users: Array(50).fill({
+            firstname: "alejandro",
+            lastname: "velasco",
+        }),
         userForm: {
             firstname: "",
             lastname: "",
