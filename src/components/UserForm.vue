@@ -4,17 +4,33 @@
             <div class="drop" @dragover.prevent @drop="onDrop">
                 <Profile class="img" v-if="!image" />
 
-                <div v-else v-bind:class="{ 'image': true }">
+                <div v-else v-bind:class="{ image: true }">
                     <img :src="image" alt class="image" />
                     <button class="btn" @click="removeFile">X</button>
                 </div>
             </div>
         </div>
         <form class="form">
-            <input v-model="firstname" required class="input" type="text" placeholder="Nombre:" />
-            <input v-model="lastname" required class="input" type="text" placeholder="Apellido:" />
+            <input
+                v-model="firstname"
+                required
+                class="input"
+                type="text"
+                placeholder="Nombre:"
+            />
+            <input
+                v-model="lastname"
+                required
+                class="input"
+                type="text"
+                placeholder="Apellido:"
+            />
         </form>
-        <button @click="saveUser({image, firstname, lastname})" class="save-user">
+        <button
+            @click="saveUser({ image, firstname, lastname })"
+            class="save-user"
+            :disabled="disableForm()"
+        >
             <Save class="save-user-img" />
         </button>
     </div>
@@ -28,17 +44,10 @@ export default {
     name: "UserForm",
     components: {
         Profile,
-        Save,
-    },
-    data() {
-        return {
-            image: "",
-            firstname: "",
-            lastname: "",
-        };
+        Save
     },
     methods: {
-        onDrop: function (e) {
+        onDrop: function(e) {
             e.stopPropagation();
             e.preventDefault();
             var files = e.dataTransfer.files;
@@ -52,7 +61,7 @@ export default {
             var reader = new FileReader();
             var vm = this;
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 vm.image = e.target.result;
             };
             reader.readAsDataURL(file);
@@ -60,11 +69,50 @@ export default {
         removeFile() {
             this.image = "";
         },
-        saveUser(user) {
-            this.$store.commit("addUser", { user });
-            this.$store.commit("toggleForm");
+        disableForm() {
+            return this.firstname.length === 0 || this.lastname.length === 0;
         },
+        saveUser(user) {
+            const { editing } = this.$store.state;
+
+            editing
+                ? this.$store.commit("updateUser", user)
+                : this.$store.commit("addUser", user);
+
+            this.$store.commit("hideForm");
+        }
     },
+    computed: {
+        editing: {
+            get() {
+                return this.$store.state.editing;
+            }
+        },
+        firstname: {
+            get() {
+                return this.$store.state.userForm.firstname;
+            },
+            set(v) {
+                this.$store.commit("updateFirstname", v);
+            }
+        },
+        lastname: {
+            get() {
+                return this.$store.state.userForm.lastname;
+            },
+            set(v) {
+                this.$store.commit("updateLastname", v);
+            }
+        },
+        image: {
+            get() {
+                return this.$store.state.userForm.image;
+            },
+            set(v) {
+                this.$store.commit("updateImage", v);
+            }
+        }
+    }
 };
 </script>
 

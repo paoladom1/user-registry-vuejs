@@ -1,23 +1,35 @@
 <template>
     <div class="container">
         <h3 class="title">Usuarios</h3>
-        <div class="user-box" @mouseover="hover = true" @mouseleave="hover=false">
+        <div
+            class="user-box"
+            @mouseover="hover = true"
+            @mouseleave="hover = false"
+        >
             <div class="users-wrapper">
-                <EmptyList v-if="$store.state.users.length === 0" class="empty-list-img" />
+                <EmptyList
+                    v-if="$store.state.users.length === 0"
+                    class="empty-list-img"
+                />
                 <ul id="grid" v-else class="user-list">
                     <li
                         class="list-element"
                         v-for="(user, index) in $store.state.users"
                         v-bind:key="index"
-                        @click="toggleProfile"
+                        @click="onItemClick(index)"
                     >
                         <Hexagon class="hexagon"></Hexagon>
-                        <img class="hexagon-img" :src="user.image" />
+                        <img
+                            v-if="user.image"
+                            :src="user.image"
+                            class="hexagon-img"
+                        />
+                        <EmptyImage v-else class="hexagon-default-img" />
                     </li>
                 </ul>
             </div>
             <transition name="slide-fade">
-                <button class="add-user" v-if="hover" @click="toggleForm">
+                <button class="add-user" v-if="hover" @click="addUser">
                     <div class="dashed-with-gradient">
                         <AddUser class="add-user-img" />
                     </div>
@@ -29,23 +41,33 @@
 
 <script>
 import AddUser from "../assets/iconos_ilustraciones/icono-agregar-usuario.svg";
+import EmptyImage from "../assets/iconos_ilustraciones/icono-usuario-en-hexagono.svg";
 import EmptyList from "../assets/iconos_ilustraciones/ilustracion-usuarios-vacios.svg";
 import Hexagon from "../assets/iconos_ilustraciones/icono-hexagono.svg";
-import { mapMutations } from "vuex";
 
 export default {
     name: "UserList",
     components: {
         AddUser,
+        EmptyImage,
         EmptyList,
-        Hexagon,
+        Hexagon
     },
     data() {
         return {
-            hover: false,
+            hover: false
         };
     },
-    methods: mapMutations(["toggleForm", "toggleProfile"]),
+    methods: {
+        addUser() {
+            this.$store.commit("cleanupForm");
+            this.$store.commit("showForm");   
+        },
+        onItemClick(index) {
+            this.$store.commit("setCurrentUser", index);
+            this.$store.commit("showProfile");
+        },
+    }
 };
 </script>
 
@@ -136,6 +158,7 @@ export default {
 }
 
 .list-element {
+    position: relative;
     width: 45px;
     height: auto;
     margin: 0;
@@ -160,11 +183,21 @@ export default {
     height: 45px;
 }
 
+.hexagon-default-img,
 .hexagon-img {
     position: absolute;
     width: 35px;
     height: 40px;
     margin: 2.7px 2px 2px 5px;
+}
+
+.hexagon-default-img {
+    position: absolute;
+    left: 7px;
+    top: 3px;
+}
+
+.hexagon-img {
     clip-path: polygon(0 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0, 0 25%);
 }
 
