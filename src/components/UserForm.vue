@@ -11,20 +11,8 @@
             </div>
         </div>
         <form class="form">
-            <input
-                v-model="firstname"
-                required
-                class="input"
-                type="text"
-                placeholder="Nombre:"
-            />
-            <input
-                v-model="lastname"
-                required
-                class="input"
-                type="text"
-                placeholder="Apellido:"
-            />
+            <input v-model="firstname" required class="input" type="text" placeholder="Nombre:" />
+            <input v-model="lastname" required class="input" type="text" placeholder="Apellido:" />
         </form>
         <button
             @click="saveUser({ image, firstname, lastname })"
@@ -44,10 +32,10 @@ export default {
     name: "UserForm",
     components: {
         Profile,
-        Save
+        Save,
     },
     methods: {
-        onDrop: function(e) {
+        onDrop: function (e) {
             e.stopPropagation();
             e.preventDefault();
             var files = e.dataTransfer.files;
@@ -61,7 +49,7 @@ export default {
             var reader = new FileReader();
             var vm = this;
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 vm.image = e.target.result;
             };
             reader.readAsDataURL(file);
@@ -73,28 +61,19 @@ export default {
             return this.firstname.length === 0 || this.lastname.length === 0;
         },
         saveUser(user) {
-            const { editing } = this.$store.state;
-
-            editing
-                ? this.$store.commit("updateUser", user)
-                : this.$store.commit("addUser", user);
-
+            this.$store.commit("updateUser", user);
             this.$store.commit("hideForm");
-        }
+            this.$store.commit("hideProfile");
+        },
     },
     computed: {
-        editing: {
-            get() {
-                return this.$store.state.editing;
-            }
-        },
         firstname: {
             get() {
                 return this.$store.state.userForm.firstname;
             },
             set(v) {
                 this.$store.commit("updateFirstname", v);
-            }
+            },
         },
         lastname: {
             get() {
@@ -102,7 +81,7 @@ export default {
             },
             set(v) {
                 this.$store.commit("updateLastname", v);
-            }
+            },
         },
         image: {
             get() {
@@ -110,9 +89,9 @@ export default {
             },
             set(v) {
                 this.$store.commit("updateImage", v);
-            }
-        }
-    }
+            },
+        },
+    },
 };
 </script>
 

@@ -1,16 +1,9 @@
 <template>
     <div class="container">
         <h3 class="title">Usuarios</h3>
-        <div
-            class="user-box"
-            @mouseover="hover = true"
-            @mouseleave="hover = false"
-        >
+        <div class="user-box" @mouseover="hover = true" @mouseleave="hover = false">
             <div class="users-wrapper">
-                <EmptyList
-                    v-if="$store.state.users.length === 0"
-                    class="empty-list-img"
-                />
+                <EmptyList v-if="$store.state.users.length === 0" class="empty-list-img" />
                 <ul id="grid" v-else class="user-list">
                     <li
                         class="list-element"
@@ -34,11 +27,7 @@
                         @click="onItemClick(index)"
                     >
                         <Hexagon class="hexagon"></Hexagon>
-                        <img
-                            v-if="user.image"
-                            :src="user.image"
-                            class="hexagon-img"
-                        />
+                        <img v-if="user.image" :src="user.image" class="hexagon-img" />
                         <EmptyImage v-else class="hexagon-default-img" />
                     </li>
                 </ul>
@@ -66,27 +55,29 @@ export default {
         AddUser,
         EmptyImage,
         EmptyList,
-        Hexagon
+        Hexagon,
     },
     data() {
         return {
-            hover: false
+            hover: false,
         };
     },
     methods: {
         addUser() {
-            const { users } = this.$store.state;
+            const { users, showForm } = this.$store.state;
             const cant = users.length;
 
-            this.$store.commit("setCurrentUser", cant);
-            this.$store.commit("addUser");
-            this.$store.commit("setEditing");
+            if (!showForm) {
+                this.$store.commit("setCurrentUser", cant);
+                this.$store.commit("addUser");
+                this.$store.commit("setEditing")
+            }
         },
         onItemClick(index) {
             this.$store.commit("setCurrentUser", index);
             this.$store.commit("showProfile");
-        }
-    }
+        },
+    },
 };
 </script>
 
